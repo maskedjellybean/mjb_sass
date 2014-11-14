@@ -1,0 +1,124 @@
+
+// Use to create media queries. See _variables.scss for values of particular breakpoints.
+@mixin media($media) {
+  @if $media == mobile {
+    @media only screen and (max-width: $screen-x-sm-max) { @content; }
+  }
+  @if $media == tablet {
+    @media only screen and (max-width: $screen-sm-min) { @content; }
+  }
+  @else if $media == desktop {
+    @media only screen and (max-width: $screen-md-min) { @content; }
+  }
+  @else if $media == large-desktop {
+    @media only screen and (max-width: $screen-lg-min) { @content; }
+  }
+  // Based on min-width
+  @if $media == tablet-min {
+    @media only screen and (min-width: $screen-sm-min) { @content; }
+  }
+  @else if $media == desktop-min {
+    @media only screen and (min-width: $screen-md-min) { @content; }
+  }
+  @else if $media == large-desktop-min {
+    @media only screen and (min-width: $screen-lg-min) { @content; }
+  }
+}
+
+
+// Creates marquee overlay hover effect with fade-in text
+@mixin marquee-overlay-hover($overlay-color: black, $fade-to-transparent: false, $popup-margin: $spacing-large, $popup-margin-bottom: $spacing-large) {
+  @extend %clearfix;
+  .views-row {
+    position: relative;
+    .overlay {
+      z-index: 1;
+      transition: opacity 0.3s;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      @if $fade-to-transparent == false {
+        background: $overlay-color;
+      }
+      @else {
+        @include background-image(linear-gradient(transparent, transparent, $overlay-color));
+      }
+    }
+    .text-container, .views-field-title {
+      z-index: 4;
+      transition: all 0.3s;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      margin: 0 $popup-margin;
+      opacity: 0;
+      color: $white;
+    }
+  }
+  .views-row:hover {
+    .overlay {
+      transition: opacity 0.3s;
+      @if $fade-to-transparent == false {
+        opacity: 0.4;
+      }
+      @else {
+        opacity: 0.8;
+      }
+    }
+    .text-container, .views-field-title {
+      transition: all 0.3s;
+      margin-bottom: $popup-margin-bottom;
+      opacity: 1;
+    }
+  }
+  // Tablet
+  @include media(tablet) {
+    .views-row {
+      .text-container, .views-field-title {
+        margin: 0 $spacing-large;
+      }
+    }
+    .views-row:hover {
+      .text-container, .views-field-title {
+        margin-bottom: $spacing-large;
+      }
+    }
+  }
+  // Mobile
+  @media only screen and (max-width: $screen-x-sm-max) {
+    // Remove hover effects for mobile
+    .views-row, .views-row:hover {
+      .overlay {
+        transition: none;
+        @if $fade-to-transparent == false {
+          opacity: 0;
+        }
+        @else {
+          opacity: 0.4;
+        }
+      }
+      .text-container, .views-field-title {
+        opacity: 1;
+        transition: none;
+        margin: 0 $spacing-medium;
+        margin-bottom: $spacing-medium;
+        font-size: $font-size-base-mobile;
+        line-height: $headings-line-height;
+        text-shadow: #333 0px 2px 6px;
+      }
+      h2, h3, .button-main-white {
+        font-size: $font-size-base-mobile;
+        line-height: $headings-line-height;
+      }
+      .button-main-white {
+        display: inline;
+        padding: 0;
+        border: none;
+      }
+    }
+  }
+}
