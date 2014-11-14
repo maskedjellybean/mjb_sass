@@ -122,3 +122,78 @@
     }
   }
 }
+
+
+// Absolutely position an element vertically center
+@mixin position-vertical-center($element-height) {
+  position: absolute;
+  top: calc(50% - #{$element-height});
+}
+
+// Colored box
+@mixin color-box($color : $brand-hub, $padding : $spacing-small, $padding-horizontal : "") {
+  padding: $padding;
+  background: $color;
+  @if $padding-horizontal != "" {
+    padding-left: $padding-horizontal;
+    padding-right: $padding-horizontal;
+  }
+}
+
+// Colored box with an inner colored div
+@mixin color-content-box($outer-color : $brand-game, $outer-padding : $spacing-small, $inner-padding : $spacing-medium) {
+  padding: $outer-padding;
+  background: $outer-color;
+  & > div {
+    padding: $inner-padding;
+    background: lighten($outer-color, 45%);
+  }
+}
+
+// Tab menu pop-up effect (apply to <ul>)
+@mixin tab-menu-pop-up($original-height : 40px, $pop-up-distance : 10px, $padding : $spacing-small) {
+  padding: 0;
+  margin: 0;
+  li {
+    float: left;
+    height: $original-height;
+    margin-top: 0;
+    list-style: none;
+    a {
+      display: block;
+      height: $original-height;
+      padding: $padding;
+      text-decoration: none;
+      text-align: center;
+    }
+  }
+  li:hover, li.active, li.show-tab-current, li.active-trail {
+    height: $original-height + $pop-up-distance;
+    margin-top: (-$pop-up-distance);
+    a {
+      height: $original-height + $pop-up-distance;
+    }
+  }
+}
+
+// Tab menu turn off (useful for having tab menu at desktop and removing on mobile)
+@mixin tab-menu-pop-up-off($original-height : auto) {
+  li:hover, li.active, li.show-tab-current {
+    height: $original-height;
+    margin-top: 0;
+    a {
+      height: $original-height;
+    }
+  }
+}
+
+// Override default link color easily (apply to <a>)
+@mixin link-color-override($color, $hover-color : "") {
+  @if $hover-color == "" {
+    $hover-color : lighten($color,20%);
+  }
+  color: $color;
+  &:hover, &:visited {
+    color: $hover-color;
+  }
+}
